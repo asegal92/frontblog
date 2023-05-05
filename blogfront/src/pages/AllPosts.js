@@ -4,10 +4,10 @@ import {Link} from 'react-router-dom'
 const AllPosts = (props) =>  (
     <>
     <Link to='/new'>
-    <button>Add a New Blog Post</button>
+    <button>Add New Blog Post</button>
     </Link>
     {props.posts.map(
-    (post) => <Post post={post} key={post.id} />
+     (post) => <Post post={post} key={post.id} deleteBlog={props.deleteBlog} />
     )}
     </>
 )

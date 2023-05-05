@@ -7,61 +7,69 @@ import { Route, Routes } from 'react-router-dom'
 
 const apiURL ="https://blog-0.herokuapp.com"
 
-function App(props) {
- const [posts, setPosts] = useState([])
+function App() {
+  const [posts, setPosts] = useState([])
 
- const getBlog = async () => {
-  const response = await fetch(apiURL + '/blog/');
-  const data = await response.json();
-  setPosts(data);
- }
+  const getBlog = async () => {
+    const response = await fetch(apiURL + '/blog/')
+    const data = await response.json()
+    setPosts(data)
+  }
 
- useEffect (() => {
-  getBlog()
- }, [])
-
- const handleFormSubmission = async (data, type) => {
-  if(type === 'new'){
-    const response = await fetch(`${apiURL}/blog/`, {
-      method: 'post',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+  useEffect(() => {
     getBlog()
-  } else {
-    const response = await fetch(`${apiURL}/blog/${data.id}/`, {
-      method: 'put',
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+  }, [])
+
+  const handleFormSubmission = async (data, type) => {
+    if(type === 'new'){
+      const response = await fetch(`${apiURL}/blog/`, {
+        method: 'post',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      })
+      getBlog()
+    } else {
+      const response = await fetch(`${apiURL}/blog/${data.id}/`, {
+        method: 'put',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      })
+      getBlog()
+    }
+  }
+  
+  const deleteBlog = async (id) => {
+    const response = await fetch(`${apiURL}/blog/${id}/`,
+    {
+      method: 'delete'
     })
     getBlog()
   }
- }
 
   return (
     <div className="App">
-      <h1>Blog</h1>
+      <h1>My Blog</h1>
       <Routes>
-      <Route
+        <Route
           exact
-          path="/"
-          element={<AllPosts posts={posts} />}
+          path='/'
+          element={<AllPosts posts={posts} deleteBlog={deleteBlog} />}
         />
         <Route
-          path="/post/:id"
+          path='/post/:id'
           element={<SinglePost posts={posts} />}
         />
         <Route
-          path="/new"
-          element={<Form handleSubmit={handleFormSubmission} buttonLabel='Add New Post' formType='new'/>}
+          path='/new'
+          element={<Form handleSubmit={handleFormSubmission} buttonLabel='Add Post' formType='new'/>}
         />
         <Route
-          path="/edit/:id"
-          element={<Form posts={posts} handleSubmit={handleFormSubmission} buttonLabel='Edit Your Post' formType='edit'/>}
+          path='/edit/:id'
+          element={<Form posts={posts} handleSubmit={handleFormSubmission} buttonLabel='Edit Post' formType='edit'/>}
         />
       </Routes>
     </div>
