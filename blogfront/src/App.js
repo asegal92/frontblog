@@ -20,11 +20,25 @@ function App(props) {
   getBlog()
  }, [])
 
- const handleFormSubmission =  (data, type) => {
+ const handleFormSubmission = async (data, type) => {
   if(type === 'new'){
-
+    const response = await fetch(`${apiURL}/blog/`, {
+      method: 'post',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    getBlog()
   } else {
-
+    const response = await fetch(`${apiURL}/blog/${data.id}/`, {
+      method: 'put',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    getBlog()
   }
  }
 

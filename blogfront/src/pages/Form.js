@@ -1,9 +1,23 @@
-import {useState} from 'react'
+import {useMemo, useState} from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Form = (props) => {
-    const [formData, setFormData] = useState({
+    const navigate = useNavigate()
+    const params = useParams()
+
+    const currentPost = useMemo(() => props.posts.find(post => post.id === parseInt(params.id)
+    ), [params.id, props.posts])
+
+
+    const [formData, setFormData] = useState(
+        props.formType === 'new' ?  {
         title: '',
-        body: ''
+        body: '',
+        } : {
+        title: currentPost.title,
+        body: currentPost.body,
+        id: parseInt(currentPost.id)
+        
     })
 
     const handleChange = (event) => {
@@ -12,22 +26,25 @@ const Form = (props) => {
                 ...prev, 
                 [event.target.name]: event.target.value 
             }
-            ))
+        ))
     }
 
     const handleSubmisson = (event) => {
         event.preventDefault();
         props.handleSubmit(formData, props.formType)
+        navigate('/')
     }
 
  return (
     <form onSubmit={handleSubmisson}> 
+    <h3>Title</h3>
       <input
         type="text"
         onChange={handleChange}
         value={formData.title}
         name="title"
       />
+      <h3>Body</h3>
       <input
         type="text"
         onChange={handleChange}
