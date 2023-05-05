@@ -20,6 +20,14 @@ function App(props) {
   getBlog()
  }, [])
 
+ const handleFormSubmission =  (data, type) => {
+  if(type === 'new'){
+
+  } else {
+
+  }
+ }
+
   return (
     <div className="App">
       <h1>Blog</h1>
@@ -35,11 +43,11 @@ function App(props) {
         />
         <Route
           path="/new"
-          element={<Form />}
+          element={<Form handleSubmit={handleFormSubmission} buttonLabel='Add New Post' formType='new'/>}
         />
         <Route
           path="/edit/:id"
-          element={<Form />}
+          element={<Form posts={posts} handleSubmit={handleFormSubmission} buttonLabel='Edit Your Post' formType='edit'/>}
         />
       </Routes>
     </div>
