@@ -12,7 +12,7 @@ const SinglePost = ({posts}) => {
         <h1>{currentPost.title}</h1>
         <h2>{currentPost.body}</h2>
       <Link to={`/edit/${params.id}`} >
-        <button>Edit Todo</button>
+        <button>Edit Post</button>
       </Link>
       <Link to={'/'}>
         <button>Go Back</button>
